@@ -1,0 +1,138 @@
+/***
+ * Grid:
+ */
+
+/**
+ * @example
+ * <div class="l-container">
+ *	<div class="l-row">
+ *		<div class="l-col l-col--xs-4 ">l-col--xs-4</div>
+ *	</div>
+ *	<div class="l-row">
+ *		<div class="l-col l-col--xs-2 l-col--md-2 ">l-col--xs-2 l-col--md-2</div>
+ *		<div class="l-col l-col--xs-2 l-col--md-6 ">l-col--xs-2 l-col--md-6</div>
+ *	</div>
+ *	<div class="l-row">
+ *		<div class="l-col l-col--xs-1 l-col--md-2 ">l-col--xs-1 l-col--md-2</div>
+ *		<div class="l-col l-col--xs-3 l-col--md-4 ">l-col--xs-3 l-col--md-4</div>
+ *		<div class="l-col l-col--xs-4 l-col--md-2 ">l-col--xs-4 l-col--md-2</div>
+ *	</div>
+ *	<div class="l-row">
+ *		<div class="l-col l-col--xs-4 l-col--md-2 ">l-col--xs-4  l-col--md-2</div>
+ *		<div class="l-col l-col--xs-4 l-col--md-2 ">l-col--xs-4  l-col--md-2</div>
+ *		<div class="l-col l-col--xs-4 l-col--md-2 ">l-col--xs-4  l-col--md-2</div>
+ *		<div class="l-col l-col--xs-4 l-col--md-2 ">l-col--xs-4  l-col--md-2</div>
+ *	</div>
+ * </div>
+ */
+
+$grid-breakpoints-sm: 414px; // Small screen / phone / Is disabled by default
+$grid-breakpoints-md: 768px; // Medium screen / tablet
+$grid-breakpoints-lg: 1024px; // Large screen / desktop
+$grid-breakpoints-xl: 1280px; // Extra large screen / wide desktop / Is disabled by default
+
+// You can define different number of columns for different breakpoint
+$grid-columns-mobile: 4;
+$grid-columns-tablet: 12;
+$grid-columns-desktop: 12;
+$grid-gutter: 16px;
+
+// Turn this value to false if you don't want to use offset
+$offset-enable: true !default;
+
+// Set a width (to be used in or out of media queries)
+@mixin make-col($columns, $grid-columns) {
+    width: percentage(($columns / $grid-columns));
+}
+@mixin make-offset($columns, $grid-columns) {
+    margin-left: percentage(($columns / $grid-columns));
+}
+
+// You can remove this code if you have already defined your box-sizing in your reset like this * { box-sizing: border-box; }
+.l-col,
+.l-container,
+.l-row {
+    box-sizing: border-box;
+}
+
+.l-container {
+    width: 100%;
+    max-width: 1004px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.l-row {
+    margin-left: -$grid-gutter;
+
+    &:after {
+        display: table;
+        clear: both;
+        content: "";
+    }
+}
+
+.l-col {
+    position: relative;
+    float: left;
+    min-height: 1px;
+    padding-left: $grid-gutter;
+}
+
+.l-col--center {
+    margin-left: auto;
+    margin-right: auto;
+    float: none;
+}
+
+.l-col--revert { float: right; }
+
+@for $i from 1 to $grid-columns-mobile+1 {
+    .l-col--xs-#{$i} {
+        @include make-col($i, $grid-columns-mobile);
+    }
+}
+
+// Remove comments is you want to use this braekpoint
+// @media (min-width: $grid-breakpoints-sm) {
+//     @for $i from 1 to $grid-columns-mobile+1 {
+//	       .l-col--sm-#{$i} { @include make-col($i, $grid-columns-mobile); }
+//     }
+// }
+
+@media (min-width: $grid-breakpoints-md) {
+    .l-container {
+        padding-left: 32px;
+        padding-right: 32px;
+    }
+    @for $i from 1 to $grid-columns-tablet+1 {
+        .l-col--md-#{$i} {
+            @include make-col($i, $grid-columns-tablet);
+        }
+        @if $offset-enable {
+            .l-col--md-offset-#{$i} {
+                @include make-offset($i, $grid-columns-tablet);
+            }
+        }
+    }
+}
+
+@media (min-width: $grid-breakpoints-lg) {
+     @for $i from 1 to $grid-columns-desktop+1{
+        .l-col--lg-#{$i} {
+            @include make-col($i, $grid-columns-desktop);
+        }
+        @if $offset-enable {
+            .l-col--lg-offset-#{$i} {
+                @include make-offset($i, $grid-columns-desktop);
+            }
+        }
+    }
+}
+
+// Remove comments is you want to use this braekpoint
+// @media (min-width: $grid-breakpoints-xl) {
+//     @for $i from 1 to $grid-columns-desktop+1 {
+//	       .l-col--xl-#{$i} { @include make-col($i, $grid-columns-desktop); }
+//     }
+// }
